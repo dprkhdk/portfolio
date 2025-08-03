@@ -1,0 +1,49 @@
+.text-2xl {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0;
+}
+.text-1xl {
+    font-size: 1.1rem;
+    color: #b5b5b5a4;
+    display: block;
+    margin-top: 10px;
+}
+.text-xl {
+    font-size: 1rem;
+    color: #b5b5b5a4;
+    display: block;
+    margin-top: 10px;
+}
+
+.font-semibold {
+    font-weight: 800;
+}
+
+.text-center {
+    text-align: center;
+}
+
+@media (min-width: 600px) {
+    .text-2xl {
+        font-size: 3rem;
+    }
+    .text-1xl {
+        font-size: 1.5rem;
+    }
+    .text-xl {
+        font-size: 1.125rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-2xl {
+        font-size: 4rem;
+    }
+    .text-1xl {
+        font-size: 2rem;
+    }
+    .text-xl {
+        font-size: 1rem;
+    }
+}
