@@ -13,7 +13,7 @@ const Header = observer(() => {
     const items = [
         { label: languageStore.Home, href: "/" },
         { label: languageStore.Projects, href: "/projects" },
-        { label: languageStore.Experience, href: "/contact" },
+        { label: languageStore.Experience, href: "/experience" },
     ];
     const activeIndex = items.findIndex(item => item.href === location.pathname);
 
