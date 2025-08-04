@@ -10,8 +10,8 @@ export interface BentoCardProps {
   title?: string;
   description?: string;
   label?: string;
-  imageUrl?: string; // Добавлено изображение проекта
-  linkUrl?: string; // Добавлена ссылка на проект
+  imageUrl?: string;
+  linkUrl?: string;
 }
 
 export interface BentoProps {
@@ -28,7 +28,6 @@ export interface BentoProps {
   enableMagnetism?: boolean;
 }
 
-// Обновленные данные с изображениями и ссылками
 
 
 const DEFAULT_PARTICLE_COUNT = 12;
@@ -37,7 +36,6 @@ const DEFAULT_GLOW_COLOR = "132, 0, 255";
 const MOBILE_BREAKPOINT = 768;
 
 
-// --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ (без изменений) ---
 
 const createParticleElement = (
     x: number,
@@ -82,9 +80,6 @@ const updateCardGlowProperties = (
   card.style.setProperty("--glow-intensity", glow.toString());
   card.style.setProperty("--glow-radius", `${radius}px`);
 };
-
-
-// --- КОМПОНЕНТЫ ---
 
 const ParticleCard: React.FC<{
   children: React.ReactNode;
@@ -349,7 +344,6 @@ const ParticleCard: React.FC<{
   );
 };
 
-// ...Компонент GlobalSpotlight без изменений...
 const GlobalSpotlight: React.FC<{
   gridRef: React.RefObject<HTMLDivElement | null>;
   disableAnimations?: boolean;
@@ -501,7 +495,6 @@ const GlobalSpotlight: React.FC<{
   return null;
 };
 
-// ...Компонент BentoCardGrid и хук useMobileDetection без изменений...
 const BentoCardGrid: React.FC<{
   children: React.ReactNode;
   gridRef?: React.RefObject<HTMLDivElement | null>;
@@ -527,22 +520,36 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
-// Новый компонент для содержимого карточки
-const CardContent: React.FC<{ card: BentoCardProps }> = ({ card }) => (
-    <>
-      {card.imageUrl && <img src={card.imageUrl} alt={card.title || 'Project image'} className="card__image" />}
-      <div className="card__overlay"></div>
-      <div className="card__header">
-        <div className="card__label">{card.label}</div>
-      </div>
-      <div className="card__content">
-        <h2 className="card__title">{card.title}</h2>
-        <p className="card__description">{card.description}</p>
-      </div>
-    </>
-);
+const CardContent: React.FC<{ card: BentoCardProps }> = ({ card }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-// --- ОСНОВНОЙ КОМПОНЕНТ ---
+  return (
+      <>
+        {card.imageUrl && (
+            <div className="card-image-wrapper">
+              {!isImageLoaded && <div className="card-preloader"></div>}
+
+              <img
+                  src={card.imageUrl}
+                  alt={card.title || 'Project image'}
+                  className={`card__image ${isImageLoaded ? 'card__image--loaded' : ''}`}
+                  onLoad={() => setIsImageLoaded(true)}
+              />
+            </div>
+        )}
+
+        <div className="card__overlay"></div>
+        <div className="card__header">
+          <div className="card__label">{card.label}</div>
+        </div>
+        <div className="card__content">
+          <h2 className="card__title">{card.title}</h2>
+          <p className="card__description">{card.description}</p>
+        </div>
+      </>
+  );
+};
+
 
 const MagicBento: React.FC<BentoProps> = observer(({
                                                      textAutoHide = true,
@@ -574,7 +581,6 @@ const MagicBento: React.FC<BentoProps> = observer(({
         )}
 
         <BentoCardGrid gridRef={gridRef}>
-          {/* 5. Використовуємо дані з `languageStore` замість `cardData` */}
           {languageStore.projectsData.map((card, index) => {
             const cardProps = {
               className: `card ${textAutoHide ? "card--text-autohide" : ""} ${enableBorderGlow ? "card--border-glow" : ""}`,
